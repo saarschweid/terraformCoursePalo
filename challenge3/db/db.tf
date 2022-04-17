@@ -1,9 +1,10 @@
 resource "aws_instance" "db" {
-  ami = "ami-0c02fb55956c7d316"
+  ami           = "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
 
   tags = {
-      Name = "DB Server"
+    Name      = "DB Server"
+    yor_trace = "b4a3183a-6f47-4a2a-81f6-db81d812fbb8"
   }
 }
 

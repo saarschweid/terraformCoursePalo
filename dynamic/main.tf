@@ -1,46 +1,52 @@
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
   profile = "dev2"
 }
 
 variable "ingressrules" {
-  type = list(number)
-  default = [ 80, 443 ]
+  type    = list(number)
+  default = [80, 443]
 }
 
 variable "egressrules" {
-  type = list(number)
-  default = [ 80,443,25, 3306,53,8080]
+  type    = list(number)
+  default = [80, 443, 25, 3306, 53, 8080]
 }
 
 resource "aws_instance" "ec2" {
-  ami = "ami-0c02fb55956c7d316"
-  instance_type = "t2.micro"
+  ami             = "ami-0c02fb55956c7d316"
+  instance_type   = "t2.micro"
   security_groups = [aws_security_group.webtraffic.name]
+  tags = {
+    yor_trace = "9efb2639-8bda-4c99-b809-235b02e408a6"
+  }
 }
 
 resource "aws_security_group" "webtraffic" {
   name = "Allow HTTPS"
 
-  dynamic "ingress"  {
-      iterator = port
-      for_each = var.ingressrules
-      content {
-        from_port = port.value
-        to_port = port.value
-        protocol = "TCP"
-        cidr_blocks = ["0.0.0.0/0"]
-      }
+  dynamic "ingress" {
+    iterator = port
+    for_each = var.ingressrules
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "TCP"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
-  dynamic "egress"  {
-      iterator = port
-      for_each = var.egressrules
-      content {
-        from_port = port.value
-        to_port = port.value
-        protocol = "TCP"
-        cidr_blocks = ["0.0.0.0/0"]
-      }
+  dynamic "egress" {
+    iterator = port
+    for_each = var.egressrules
+    content {
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "TCP"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+  tags = {
+    yor_trace = "5619f842-19a1-414b-b766-27e992b296dc"
   }
 }
