@@ -1,10 +1,10 @@
 variable "vpcname" {
-  type = string
+  type    = string
   default = "myvpc"
 }
 
 variable "sshport" {
-  type = number
+  type    = number
   default = 22
 }
 
@@ -13,25 +13,25 @@ variable "enabled" {
 }
 
 variable "mylist" {
-  type = list(string)
-  default = [ "value1", "value2" ]
+  type    = list(string)
+  default = ["value1", "value2"]
 }
 
 variable "mymap" {
   type = map
   default = {
-      key1 = "value1"
-      key2 = "value2"
+    key1 = "value1"
+    key2 = "value2"
   }
 }
 
 variable "inputname" {
-  type = string
+  type        = string
   description = "Set the VPC name"
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
   profile = "dev2"
 }
 
@@ -39,7 +39,8 @@ resource "aws_vpc" "myvpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-      Name = var.inputname
+    Name      = var.inputname
+    yor_trace = "3a76a26f-b722-45fc-ba99-4ac872de89da"
   }
 }
 
